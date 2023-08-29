@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        .calculator {
+            max-width: 300px;
+            margin: 100px auto;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        #display {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            text-align: right;
+            margin-bottom: 10px;
+            
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+        }
+        
+        button {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #e0e0e0;
+        }
+        
+    </style>
+    <title>Calculator</title>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" disabled>
+        <div class="buttons">
+            <button class="number">7</button>
+            <button class="number">8</button>
+            <button class="number">9</button>
+            <button class="operator">/</button>
+            <button class="number">4</button>
+            <button class="number">5</button>
+            <button class="number">6</button>
+            <button class="operator">*</button>
+            <button class="number">1</button>
+            <button class="number">2</button>
+            <button class="number">3</button>
+            <button class="operator">-</button>
+            <button class="number">0</button>
+            <button class="operator">.</button>
+            <button id="clear">C</button>
+            <button id="calculate">=</button>
+            <button class="operator">+</button>
+        </div>
+    </div>
+    <script>
+        const display = document.getElementById("display");
+const buttons = document.querySelectorAll(".number, .operator");
+const clearButton = document.getElementById("clear");
+const calculateButton = document.getElementById("calculate");
+
+let currentInput = "";
+let previousInput = "";
+let operator = "";
+
+buttons.forEach(button => {
+    button.addEventListener("click", () => {
+        currentInput += button.textContent;
+        display.value = currentInput;
+    });
+});
+
+clearButton.addEventListener("click", () => {
+    currentInput = "";
+    previousInput = "";
+    operator = "";
+    display.value = "";
+});
+
+calculateButton.addEventListener("click", () => {
+    if (previousInput !== "" && currentInput !== "") {
+        const num1 = parseFloat(previousInput);
+        const num2 = parseFloat(currentInput);
+        switch (operator) {
+            case "+":
+                currentInput = (num1 + num2).toString();
+                break;
+            case "-":
+                currentInput = (num1 - num2).toString();
+                break;
+            case "*":
+                currentInput = (num1 * num2).toString();
+                break;
+            case "/":
+                currentInput = (num1 / num2).toString();
+                break;
+        }
+        display.value = currentInput;
+        previousInput = "";
+        operator = "";
+    }
+});
+
+buttons.forEach(button => {
+    if (button.classList.contains("operator")) {
+        button.addEventListener("click", () => {
+            if (currentInput !== "") {
+                previousInput = currentInput;
+                operator = button.textContent;
+                currentInput = "";
+            }
+        });
+    }
+});
+
+    </script>
+</body>
+</html>
